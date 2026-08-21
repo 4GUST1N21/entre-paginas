@@ -145,6 +145,16 @@
   position: relative;
 }
 
+.chestClicked {
+  animation: chestBounce 0.3s ease-in-out forwards !important;
+}
+
+@keyframes chestBounce {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(0.9) translateY(10px); filter: brightness(1.2); }
+  100% { transform: scale(1.05) translateY(-5px); filter: brightness(1.1); }
+}
+
 .garden {
   position: relative;
   width: 80px;
@@ -218,5 +228,17 @@
   }
   .entity:hover {
     transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cloud1, .cloud2 {
+    animation: none !important;
   }
 }

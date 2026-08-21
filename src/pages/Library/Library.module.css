@@ -152,6 +152,9 @@
 }
 
 @media (max-width: 768px) {
+  .libraryContainer {
+    padding-bottom: 120px;
+  }
   .header {
     flex-direction: column;
     align-items: flex-start;

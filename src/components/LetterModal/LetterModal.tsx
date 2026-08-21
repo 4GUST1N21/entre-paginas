@@ -12,6 +12,7 @@ interface LetterModalProps {
 
 export const LetterModal: React.FC<LetterModalProps> = ({ isOpen, onClose, isFirstTime }) => {
   const [isReading, setIsReading] = useState(!isFirstTime);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     if (isOpen && !isFirstTime) {
@@ -23,6 +24,14 @@ export const LetterModal: React.FC<LetterModalProps> = ({ isOpen, onClose, isFir
 
   if (!isOpen) return null;
 
+  const handleOpenLetter = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setIsReading(true);
+      setIsTransitioning(false);
+    }, 400); // Duración del fade-out
+  };
+
   return (
     <div className={styles.overlay}>
       <div className={`${styles.glowBehind} ${isReading ? styles.glowActive : ''}`}></div>
@@ -30,13 +39,13 @@ export const LetterModal: React.FC<LetterModalProps> = ({ isOpen, onClose, isFir
       <div className={`${styles.letterContainer} ${isReading ? styles.reading : styles.envelope}`}>
         
         {!isReading ? (
-          <div className={`${styles.introContent} animate-fade-in`}>
+          <div className={`${styles.introContent} ${isTransitioning ? styles.fadeOut : 'animate-fade-in'}`}>
             <div className={styles.waxSeal}>
               <span className={styles.sealIcon}>🌸</span>
             </div>
             <h2 className={styles.introTitle}>{SECRET_LETTER_TITLE}</h2>
             <p className={styles.introSubtitle}>{SECRET_LETTER_SUBTITLE}</p>
-            <Button variant="primary" onClick={() => setIsReading(true)} className={styles.openBtn}>
+            <Button variant="primary" onClick={handleOpenLetter} className={styles.openBtn}>
               <MailOpen size={18} style={{ marginRight: '8px' }} /> ABRIR CARTA
             </Button>
           </div>

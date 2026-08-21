@@ -9,16 +9,21 @@ export const World: React.FC = () => {
   const { worldState, openSecretChest, isLoaded } = useWorld();
   const [isLetterOpen, setIsLetterOpen] = useState(false);
   const [isFirstTimeOpening, setIsFirstTimeOpening] = useState(false);
+  const [isChestClicked, setIsChestClicked] = useState(false);
 
   const handleChestClick = () => {
+    setIsChestClicked(true);
     if (!worldState.secretChestOpened) {
       openSecretChest();
       setIsFirstTimeOpening(true);
     } else {
       setIsFirstTimeOpening(false);
     }
-    // Pequeño retraso para dar sensación de apertura si es la primera vez (opcional, pero css es más rápido)
-    setTimeout(() => setIsLetterOpen(true), 300);
+    // Retraso para que la pequeña animación de rebote se ejecute antes de abrir
+    setTimeout(() => {
+      setIsLetterOpen(true);
+      setIsChestClicked(false);
+    }, 300);
   };
 
   if (!isLoaded) return null;
@@ -84,7 +89,7 @@ export const World: React.FC = () => {
               <div className={`${styles.chestWrapper} ${worldState.secretChestOpened ? styles.chestOpened : ''}`}>
                 {!worldState.secretChestOpened && <div className={styles.chestGlow}></div>}
                 {!worldState.secretChestOpened && <div className={styles.chestParticles}></div>}
-                <div className={`${styles.chest} animate-float`} style={{ animationDelay: '2s' }}>
+                <div className={`${styles.chest} animate-float ${isChestClicked ? styles.chestClicked : ''}`} style={{ animationDelay: '2s' }}>
                   <span className={styles.emoji}>{worldState.secretChestOpened ? '📬' : '🧰'}</span>
                   <div className={styles.shadow}></div>
                 </div>
