@@ -67,9 +67,10 @@ export const LetterModal: React.FC<LetterModalProps> = ({ isOpen, onClose, isFir
                   </p>
                 ))}
               </div>
-            </div>
-            <div className={styles.actions}>
-              <Button variant="secondary" onClick={onClose}>GUARDAR CARTA</Button>
+              
+              <div className={styles.actions}>
+                <Button variant="secondary" onClick={onClose}>GUARDAR CARTA</Button>
+              </div>
             </div>
           </div>
         )}
