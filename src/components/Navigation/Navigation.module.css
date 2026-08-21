@@ -1,0 +1,88 @@
+.nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-overlay);
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-cream);
+  z-index: 100;
+}
+
+.navList {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  transition: all var(--transition-normal);
+}
+
+.navLink:hover:not(.disabled) {
+  background-color: var(--color-pink-light);
+  color: var(--color-text-main);
+}
+
+.active {
+  background-color: var(--color-pink-primary);
+  color: var(--color-white-warm);
+  box-shadow: var(--shadow-sm);
+}
+
+.active:hover:not(.disabled) {
+  background-color: var(--color-pink-primary);
+  color: var(--color-white-warm);
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.comingSoonBadge {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  background-color: var(--color-dusty-pink);
+  color: var(--color-white-warm);
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    width: 90%;
+    padding: 10px;
+  }
+  
+  .navList {
+    justify-content: space-between;
+    gap: 5px;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .navLink {
+    padding: 10px;
+  }
+}

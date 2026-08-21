@@ -1,0 +1,31 @@
+:root {
+  --color-pink-primary: #f7a8b8;
+  --color-pink-light: #fcd5ce;
+  --color-pink-dark: #e5989b;
+  --color-dusty-pink: #d5bdaf;
+  --color-cream: #f9ecec;
+  --color-white-warm: #fffdf9;
+  --color-green-soft: #a8d5ba;
+  --color-green-dark: #6b8f71;
+  --color-brown-light: #c89f7b;
+  --color-wood: #8b5a2b;
+  --color-gold: #ffd700;
+  --color-text-main: #5c4d4d;
+  --color-text-muted: #8b7d7b;
+  --color-overlay: rgba(255, 253, 249, 0.85);
+  
+  --font-main: 'Outfit', 'Inter', 'Segoe UI', sans-serif;
+  
+  --shadow-sm: 0 2px 8px rgba(139, 90, 43, 0.1);
+  --shadow-md: 0 4px 12px rgba(139, 90, 43, 0.15);
+  --shadow-glow: 0 0 15px rgba(247, 168, 184, 0.4);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+}
