@@ -65,6 +65,17 @@
   perspective: 1000px;
 }
 
+.terrainDetails {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(107, 143, 113, 0.2) 2px, transparent 2px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
 .worldMap {
   position: relative;
   width: 100%;
@@ -77,13 +88,23 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 150px;
+  width: 160px;
   height: 100%;
   background-color: var(--color-brown-light);
-  transform: translateX(-50%) perspective(500px) rotateX(45deg);
+  transform: translateX(-50%) perspective(600px) rotateX(50deg);
   transform-origin: bottom center;
-  opacity: 0.3;
+  opacity: 0.4;
   border-radius: 20px;
+  box-shadow: inset 0 0 20px rgba(139, 90, 43, 0.5);
+}
+
+.pathFlower {
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  z-index: 5;
+  animation: float 4s ease-in-out infinite;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
 }
 
 .entity {
@@ -102,10 +123,25 @@
 .emoji {
   font-size: 4rem;
   display: block;
-  filter: drop-shadow(var(--shadow-md));
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
 }
 
-.house, .library, .chest {
+.shadow {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 15px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 50%;
+  filter: blur(4px);
+  z-index: 1;
+}
+
+.house, .library, .chestWrapper {
   position: relative;
 }
 
@@ -116,9 +152,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(168, 213, 186, 0.5);
+  background-color: rgba(168, 213, 186, 0.6);
   border-radius: 50%;
   border: 2px dashed var(--color-pink-primary);
+}
+
+.chestWrapper {
+  position: relative;
+}
+
+.chestGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(247, 168, 184, 0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulseGlow 2s infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes pulseGlow {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+.chestOpened .emoji {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
 .blockedZone {
