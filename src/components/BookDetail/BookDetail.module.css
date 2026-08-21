@@ -213,3 +213,31 @@
     justify-content: center;
   }
 }
+
+.sessionActionRow {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.recordBtn {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(247, 168, 184, 0.4);
+}
+
+.historySection {
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--color-dusty-pink);
+}
+
+.historyTitle {
+  font-size: 1.1rem;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

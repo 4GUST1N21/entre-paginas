@@ -1,19 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { useLibrary } from '../../hooks/useLibrary';
+import { useReadingSessions } from '../../hooks/useReadingSessions';
 import { Navigation } from '../../components/Navigation/Navigation';
 import { StatBoard } from '../../components/StatBoard/StatBoard';
 import { BookCard } from '../../components/BookCard/BookCard';
 import { Modal } from '../../components/Modal/Modal';
 import { BookForm } from '../../components/BookForm/BookForm';
 import { BookDetail } from '../../components/BookDetail/BookDetail';
+import { ReadingDiary } from '../../components/ReadingDiary/ReadingDiary';
 import { Button } from '../../components/Button/Button';
 import type { Libro } from '../../types';
 import styles from './Library.module.css';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Book, BookOpen } from 'lucide-react';
 
 export const Library: React.FC = () => {
   const { libros, addLibro, updateLibro, deleteLibro, isLoaded } = useLibrary();
+  const { sessions, addSession, deleteSession, getSessionsForBook } = useReadingSessions();
   
+  const [viewMode, setViewMode] = useState<'books' | 'diary'>('books');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Libro | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -21,6 +25,16 @@ export const Library: React.FC = () => {
   const [filterState, setFilterState] = useState<string>('todos');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<string>('titulo');
+
+  // Mantener actualizado el libro seleccionado si cambia en el array global
+  React.useEffect(() => {
+    if (selectedBook) {
+      const updated = libros.find(l => l.id === selectedBook.id);
+      if (updated && JSON.stringify(updated) !== JSON.stringify(selectedBook)) {
+        setSelectedBook(updated);
+      }
+    }
+  }, [libros, selectedBook]);
 
   // Filtrado y Ordenamiento
   const filteredAndSortedBooks = useMemo(() => {
@@ -96,63 +110,86 @@ export const Library: React.FC = () => {
           </h1>
           <p className={styles.subtitle}>Todos los mundos que descubriste entre páginas.</p>
         </div>
-        <Button onClick={() => { setSelectedBook(null); setIsFormOpen(true); }} className={styles.addBtn}>
-          <Plus size={20} /> Agregar Libro
-        </Button>
+        
+        <div className={styles.headerActions}>
+          <div className={styles.viewToggle}>
+            <button 
+              className={`${styles.toggleBtn} ${viewMode === 'books' ? styles.activeToggle : ''}`}
+              onClick={() => setViewMode('books')}
+            >
+              <Book size={18}/> Libros
+            </button>
+            <button 
+              className={`${styles.toggleBtn} ${viewMode === 'diary' ? styles.activeToggle : ''}`}
+              onClick={() => setViewMode('diary')}
+            >
+              <BookOpen size={18}/> Diario
+            </button>
+          </div>
+          <Button onClick={() => { setSelectedBook(null); setIsFormOpen(true); }} className={styles.addBtn}>
+            <Plus size={20} /> Agregar Libro
+          </Button>
+        </div>
       </div>
 
       <div className={styles.content}>
-        <StatBoard libros={libros} />
+        <StatBoard libros={libros} sessions={sessions} />
 
-        <div className={styles.controls}>
-          <div className={styles.searchBox}>
-            <Search size={18} className={styles.searchIcon} />
-            <input 
-              type="text" 
-              placeholder="Buscar título o autor..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.searchInput}
-            />
-          </div>
-
-          <div className={styles.filters}>
-            <select value={filterState} onChange={(e) => setFilterState(e.target.value)} className={styles.select}>
-              <option value="todos">Todos</option>
-              <option value="pendiente">Pendientes</option>
-              <option value="leyendo">Leyendo</option>
-              <option value="completado">Terminados</option>
-              <option value="favoritos">Favoritos</option>
-            </select>
-
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={styles.select}>
-              <option value="titulo">Ordenar por Título</option>
-              <option value="autor">Ordenar por Autor</option>
-              <option value="progreso">Ordenar por Progreso</option>
-              <option value="calificacion">Ordenar por Calificación</option>
-            </select>
-          </div>
-        </div>
-
-        <div className={styles.bookshelf}>
-          {/* Decorative shelf background lines could be added here via CSS */}
-          {filteredAndSortedBooks.length > 0 ? (
-            <div className={styles.grid}>
-              {filteredAndSortedBooks.map(libro => (
-                <BookCard 
-                  key={libro.id} 
-                  libro={libro} 
-                  onClick={(l) => { setSelectedBook(l); setIsDetailOpen(true); }} 
+        {viewMode === 'books' ? (
+          <>
+            <div className={styles.controls}>
+              <div className={styles.searchBox}>
+                <Search size={18} className={styles.searchIcon} />
+                <input 
+                  type="text" 
+                  placeholder="Buscar título o autor..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={styles.searchInput}
                 />
-              ))}
+              </div>
+
+              <div className={styles.filters}>
+                <select value={filterState} onChange={(e) => setFilterState(e.target.value)} className={styles.select}>
+                  <option value="todos">Todos</option>
+                  <option value="pendiente">Pendientes</option>
+                  <option value="leyendo">Leyendo</option>
+                  <option value="completado">Terminados</option>
+                  <option value="favoritos">Favoritos</option>
+                </select>
+
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className={styles.select}>
+                  <option value="titulo">Ordenar por Título</option>
+                  <option value="autor">Ordenar por Autor</option>
+                  <option value="progreso">Ordenar por Progreso</option>
+                  <option value="calificacion">Ordenar por Calificación</option>
+                </select>
+              </div>
             </div>
-          ) : (
-            <div className={styles.emptyState}>
-              <span className={styles.emptyIcon}>🍂</span>
-              <p>No se encontraron libros en este estante.</p>
+
+            <div className={styles.bookshelf}>
+              {/* Decorative shelf background lines could be added here via CSS */}
+              {filteredAndSortedBooks.length > 0 ? (
+                <div className={styles.grid}>
+                  {filteredAndSortedBooks.map(libro => (
+                    <BookCard 
+                      key={libro.id} 
+                      libro={libro} 
+                      onClick={(l) => { setSelectedBook(l); setIsDetailOpen(true); }} 
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.emptyState}>
+                  <span className={styles.emptyIcon}>🍂</span>
+                  <p>No se encontraron libros en este estante.</p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <ReadingDiary sessions={sessions} libros={libros} />
+        )}
       </div>
 
       <Navigation />
@@ -179,6 +216,13 @@ export const Library: React.FC = () => {
         {selectedBook && (
           <BookDetail 
             libro={selectedBook} 
+            sessions={getSessionsForBook(selectedBook.id)}
+            onAddSession={(session, libro) => {
+              addSession(session, libro, updateLibro);
+            }}
+            onDeleteSession={(id, libro) => {
+              deleteSession(id, libro, updateLibro);
+            }}
             onClose={() => setIsDetailOpen(false)}
             onEdit={() => setIsFormOpen(true)}
             onDelete={handleDelete}

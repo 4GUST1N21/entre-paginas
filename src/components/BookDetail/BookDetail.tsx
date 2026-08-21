@@ -1,17 +1,33 @@
-import React from 'react';
-import type { Libro } from '../../types';
+import React, { useState } from 'react';
+import type { Libro, ReadingSession } from '../../types';
 import { Button } from '../Button/Button';
+import { ReadingSessionModal } from '../ReadingSessionModal/ReadingSessionModal';
+import { ReadingHistory } from '../ReadingHistory/ReadingHistory';
+import { Toast } from '../Toast/Toast';
 import styles from './BookDetail.module.css';
-import { Heart, Star, BookOpen, Calendar } from 'lucide-react';
+import { Heart, Star, BookOpen, Calendar, Plus } from 'lucide-react';
 
 interface BookDetailProps {
   libro: Libro;
+  sessions: ReadingSession[];
+  onAddSession: (session: Omit<ReadingSession, 'id'>, libro: Libro) => void;
+  onDeleteSession: (id: string, libro: Libro) => void;
   onEdit: () => void;
   onDelete: () => void;
   onClose: () => void;
 }
 
-export const BookDetail: React.FC<BookDetailProps> = ({ libro, onEdit, onDelete, onClose }) => {
+export const BookDetail: React.FC<BookDetailProps> = ({ 
+  libro, 
+  sessions, 
+  onAddSession, 
+  onDeleteSession, 
+  onEdit, 
+  onDelete, 
+  onClose 
+}) => {
+  const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   return (
     <div className={styles.detailContainer}>
       <div className={styles.topSection}>
@@ -63,6 +79,12 @@ export const BookDetail: React.FC<BookDetailProps> = ({ libro, onEdit, onDelete,
         </div>
       </div>
 
+      <div className={styles.sessionActionRow}>
+        <Button variant="primary" onClick={() => setIsSessionModalOpen(true)} className={styles.recordBtn}>
+          <Plus size={18} style={{ marginRight: '6px' }} /> REGISTRAR LECTURA
+        </Button>
+      </div>
+
       <div className={styles.metadataSection}>
         {libro.fechaInicio && (
           <div className={styles.metaItem}>
@@ -83,6 +105,14 @@ export const BookDetail: React.FC<BookDetailProps> = ({ libro, onEdit, onDelete,
         </div>
       )}
 
+      <div className={styles.historySection}>
+        <h3 className={styles.historyTitle}>📖 Historial de Lectura</h3>
+        <ReadingHistory 
+          sessions={sessions} 
+          onDeleteSession={(id) => onDeleteSession(id, libro)} 
+        />
+      </div>
+
       <div className={styles.actions}>
         <Button variant="ghost" onClick={onClose}>Volver</Button>
         <div className={styles.rightActions}>
@@ -90,6 +120,19 @@ export const BookDetail: React.FC<BookDetailProps> = ({ libro, onEdit, onDelete,
           <Button variant="ghost" className={styles.deleteBtn} onClick={onDelete}>Eliminar</Button>
         </div>
       </div>
+
+      <ReadingSessionModal 
+        isOpen={isSessionModalOpen}
+        onClose={() => setIsSessionModalOpen(false)}
+        libro={libro}
+        onSave={(session) => {
+          onAddSession(session, libro);
+          setToastMessage(`✨ ¡Sesión guardada! (${session.paginasLeidas} páginas)`);
+        }}
+      />
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
+      )}
     </div>
   );
 };

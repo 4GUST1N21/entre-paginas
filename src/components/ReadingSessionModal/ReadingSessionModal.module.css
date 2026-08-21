@@ -1,0 +1,80 @@
+.modalContent {
+  padding: 10px 0;
+}
+
+.bookTitle {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: var(--color-text-main);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formRow {
+  display: flex;
+  gap: 15px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 5px;
+}
+
+.formGroup label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.formGroup input, .formGroup textarea {
+  padding: 10px;
+  border: 1px solid var(--color-dusty-pink);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white-warm);
+  color: var(--color-text-main);
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.formGroup input:focus, .formGroup textarea:focus {
+  border-color: var(--color-pink-primary);
+}
+
+.resultBox {
+  background-color: var(--color-cream);
+  padding: 15px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--color-text-main);
+  border: 1px dashed var(--color-pink-primary);
+}
+
+.error {
+  color: #e57373;
+  font-size: 0.9rem;
+  text-align: center;
+  background-color: rgba(229, 115, 115, 0.1);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 480px) {
+  .formRow {
+    flex-direction: column;
+  }
+}

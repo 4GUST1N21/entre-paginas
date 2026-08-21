@@ -15,6 +15,17 @@ export interface Libro {
   resena?: string;
 }
 
+export interface ReadingSession {
+  id: string;
+  bookId: string;
+  fecha: string;
+  paginasInicio: number;
+  paginasFin: number;
+  paginasLeidas: number;
+  duracionMinutos: number;
+  nota?: string;
+}
+
 export interface Usuario {
   nombre: string;
   nivel: number;

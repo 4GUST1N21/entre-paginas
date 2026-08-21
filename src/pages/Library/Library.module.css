@@ -15,13 +15,60 @@
   gap: 20px;
 }
 
+.headerContent {
+  flex: 1;
+}
+
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.viewToggle {
+  display: flex;
+  background-color: var(--color-white-warm);
+  border: 1px solid var(--color-dusty-pink);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.toggleBtn:hover {
+  background-color: var(--color-cream);
+}
+
+.activeToggle {
+  background-color: var(--color-pink-primary);
+  color: white;
+}
+
+.activeToggle:hover {
+  background-color: var(--color-pink-dark);
+}
+
 .title {
-  font-size: 2.5rem;
-  color: var(--color-pink-dark);
+  font-size: 2.2rem;
+  color: var(--color-text-main);
+  margin-bottom: 5px;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 5px;
 }
 
 .subtitle {
